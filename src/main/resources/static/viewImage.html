@@ -1,0 +1,247 @@
+﻿﻿<!DOCTYPE html>
+<!--[if lt IE 7 ]>
+<html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]>
+<html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]>
+<html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html lang="en"> <!--<![endif]-->
+<head>
+
+    <!-- Basic Page Needs
+  ================================================== -->
+    <meta charset="utf-8">
+    <title>我的图册-MyArtist My Gallery</title>
+    <meta name="description"
+          content="Free Html5 Templates and Free Responsive Themes Designed by Kimmy | zerotheme.com">
+    <meta name="author" content="www.zerotheme.com">
+
+    <!-- Mobile Specific Metas
+  ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!-- CSS
+  ================================================== -->
+    <link rel="stylesheet" href="cssimage/style.css">
+    <link rel="stylesheet" href="cssimage/responsive.css">
+    <link rel='stylesheet' href="cssimage/camera.css">
+
+    <!--[if lt IE 8]>
+    <div style=' clear: both; text-align:center; position: relative;'>
+        <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+            <img src="http://storage.ie6countdown.com/assets/100/images/banners/warning_bar_0000_us.jpg" border="0"
+                 height="42" width="820"
+                 alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today."/>
+        </a>
+    </div>
+    <![endif]-->
+    <!--[if lt IE 9]>
+
+    <script src="jsimage/html5.js"></script>
+    <script src="jsimage/css3-mediaqueries.js"></script>
+    <![endif]-->
+    <script type='text/javascript' src='jsimage/jquery.min.js'></script>
+    <script>
+        function addImageToSlide(image, comment) {
+            var slide = document.getElementById("camera_wrap")
+            var oneImage = document.createElement("div");
+            oneImage.setAttribute("data-thumb", image);
+            oneImage.setAttribute("data-src", image);
+
+            var insideImage = document.createElement("div");
+            insideImage.setAttribute("class", "camera_caption fadeFromBottom");
+            var text = document.createTextNode(comment);
+            insideImage.appendChild(text);
+
+            oneImage.appendChild(insideImage);
+
+            slide.appendChild(oneImage)
+
+        }
+        function addImageToBelow(image, comment) {
+            var slide = document.getElementById("below");
+            var whole = document.createElement("div");
+            whole.setAttribute("class", "col-1-3");
+            var article = document.createElement("article");
+            var a = document.createElement("a");
+            a.setAttribute("href", image);
+            var img = document.createElement("img");
+            img.setAttribute("src", image);
+            img.setAttribute("class", "grayscale");
+            var h2 = document.createElement("h2");
+            var text = document.createTextNode(comment);
+            h2.appendChild(text);
+            a.appendChild(img);
+            a.appendChild(h2);
+            article.appendChild(a);
+            whole.appendChild(article);
+            slide.appendChild(whole)
+        }
+        window.onload = function () {
+            $.ajaxSettings.async = false;
+            $.get
+            ("/getMyImage.action",
+                {},
+                function (result) {
+                    if (result === null) {
+                        alert("数据加载失败！");
+                    }
+                    else if (result.length === 0) {
+                        alert("您目前没有图片");
+                    }
+                    else {
+                        for (var i = 0; i < result.length; i++) {
+                            if (result[i].filepath !== null && result[i].filepath !== undefined) {
+                                addImageToSlide(result[i].filepath, result[i].id);
+                                addImageToBelow(result[i].filepath, result[i].id)
+                            }
+                        }
+                        jQuery(function () {
+                            jQuery('#camera_wrap').camera({
+                                height: '400px',
+                                loader: 'bar',
+                                pagination: false,
+                                thumbnails: true
+                            });
+                        });
+                        var thumb = document.getElementsByClassName("camera_thumb");
+                        console.log(thumb.length);
+                        for (i = 0; i < thumb.length; i++) {
+                            //x[i].setAttribute("height","100");
+                            thumb[i].height = "75";
+                            thumb[i].width = "100";
+                        }
+                    }
+                }
+            );
+
+            $.ajaxSettings.async = true;
+        }
+        //addImageToSlide("images/scu.jpg","hhh");
+        //
+
+
+    </script>
+
+    <link href='./images/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+    <script type='text/javascript' src='jsimage/jquery.easing.1.3.js'></script>
+    <script type='text/javascript' src='jsimage/camera.min.js'></script>
+
+
+</head>
+<body>
+<!--------------Header--------------->
+<header>
+    <div class="pagetop">
+        <div class="wrap-pagetop">
+            <div hidden class="shareicons">
+                <ul>
+                    <li><a href="#"><img src="images/rss-icon.png" title="RSS"/></a></li>
+                    <li><a href="#"><img src="images/digg-icon.png" title="Digg"/></a></li>
+                    <li><a href="#"><img src="images/facebook-icon.png" title="Facebook"/></a></li>
+                    <li><a href="#"><img src="images/google-icon.png" title="Google+"/></a></li>
+                    <li><a href="#"><img src="images/twitter-icon.png" title="Twitter"/></a></li>
+                    <li><a href="#"><img src="images/sharethis-icon.png" title="Sharethis"/></a></li>
+                    <li><a href="#"><img src="images/linkedin-icon.png" title="Linkedin"/></a></li>
+                </ul>
+            </div>
+            <div hidden id="search">
+                <div class="button-search"></div>
+                <input type="text" value="Search..."
+                       onFocus="if (this.value == &#39;Search...&#39;) {this.value = &#39;&#39;;}"
+                       onBlur="if (this.value == &#39;&#39;) {this.value = &#39;Search...&#39;;}">
+            </div>
+        </div>
+    </div>
+    <div class="wrap-header">
+        <div id="logo"><a href="#"><img src="./images/logo.png"/></a></div>
+        <nav>
+            <ul>
+                <li class="current"><a href="index.html">返回主页</a></li>
+                <!--<li><a href="blog.html">Blog</a></li>-->
+                <!--<li><a href="single.html">About</a></li>-->
+                <!--<li><a href="single.html">Contact</a></li>-->
+            </ul>
+        </nav>
+    </div>
+</header>
+
+
+<!--------------Content--------------->
+<section id="content">
+    <div class="feature">
+        <div class="camera_wrap camera_magenta_skin" id="camera_wrap">
+
+
+        </div>
+        <div style="clear:both; display:block; height:10px"></div>
+    </div>
+    <div class="welcome">
+        <p>
+            这里是您的<a style="color: #DA251D;">作品展厅
+        </a><br/>您可以看到作品的<a style="color: #DA251D;">生成时间
+        </a>
+            <br/><br/>风格迁移应用为您提供作品
+            <a  style="color: #DA251D;">创意的来源
+            </a>
+            <br/>
+            <div align="center">
+                点击下方图片可以<a style="color: #DA251D;">查看原图
+    </a>
+            </div>
+
+        </p>
+    </div>
+    <div class="zerogrid">
+        <div class="row block01" id="below">
+
+
+        </div>
+    </div>
+</section>
+<!--------------Footer--------------->
+<footer>
+    <div class="zerogrid">
+        <div class="row block02">
+            <section class="col-1-3">
+                <div class="heading"><h2>About us</h2></div>
+                <div class="content">
+                    <p>这是一款免费的风格迁移应用，可以为用户提供方便快捷的创作平台。本项目为四川大学毕业设计，作者为董建文。</p>
+                </div>
+            </section>
+            <section class="col-1-3">
+                <div class="heading"><h2>Friends</h2></div>
+                <div class="content">
+                    <ul>
+                        <li><a href="http://www.scu.edu.cn">四川大学</a></li>
+                        <li><a href="http://sw.scu.edu.cn">四川大学软件学院</a></li>
+
+                    </ul>
+                </div>
+            </section>
+            <section class="col-1-3">
+                <div class="heading"><h2>Inner Links</h2></div>
+                <div class="content">
+                    <ul>
+                        <li><a href="register_user.html">注册新用户</a></li>
+                        <li><a href="login_user.html">切换账号登录</a></li>
+                        <li><a href="index.html">返回首页</a></li>
+
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div class="copyright">
+        <p>Copyright © 2019 - <a href="http://www.scu.edu.cn/" target="_blank">四川大学</a> 董建文
+            <a href="http://www.scu.edu.cn/" target="_blank" title="软件学院">软件学院</a></p>
+    </div>
+</footer>
+</body>
+<script>
+
+</script>
+</html>

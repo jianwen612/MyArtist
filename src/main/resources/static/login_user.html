@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>MyArtist登录</title>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
+        <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="assets/font-awesome/css/font-awesome.min.css">
+		<link rel="stylesheet" href="assets/css/form-elements.css">
+        <link rel="stylesheet" href="assets/css/style.css">
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="/static/js/html5shiv.js"></script>
+        <script src="/static/js/respond.min.js"></script>
+        <![endif]-->
+
+        <!-- Favicon and touch icons -->
+        <link rel="shortcut icon" href="assets/ico/favicon2.ico">
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
+
+        <script>if(window.top !== window.self){ window.top.location = window.location;}</script>
+    </head>
+
+    <body>
+<a class="navbar-brand" href="#"><img src="assets/img/logo2.png" alt=""></a>
+        <!-- Top content -->
+        <div class="top-content">
+        	
+            <div class="inner-bg">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-8 col-sm-offset-2 text">
+                            <h1><strong>MyArtist</strong>用户登录</h1>
+                            <div class="description">
+                            	<p>
+	                            	欢迎来到MyArtist
+                            	</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3 form-box">
+                        	<div class="form-top">
+                        		<div class="form-top-left">
+                        			<h3>快速登录</h3>
+                            		<p>请输入您的用户名和密码</p>
+                        		</div>
+                        		<div class="form-top-right">
+                        			<i class="fa fa-lock"></i>
+                        		</div>
+                            </div>
+                            <div class="form-bottom">
+			                    <form role="form" action="" method="post" class="login-form">
+			                    	<div class="form-group">
+			                    		<label class="sr-only" for="form-username">用户名</label>
+			                        	<input id="userId" type="text" name="form-username" placeholder="用户名..." class="form-username form-control" id="form-username">
+			                        </div>
+			                        <div class="form-group">
+			                        	<label class="sr-only" for="form-password">密码</label>
+			                        	<input id="pswd" type="password" name="form-password" placeholder="密码..." class="form-password form-control" id="form-password">
+			                        </div>
+                                    <div class="form-group">
+                                        <p class="text-muted text-center"> <a href="register_user.html">注册一个新账号</a></p>
+                                    </div>
+			                        <button type="button" onclick="login()" class="btn">登录</button>
+			                    </form>
+		                    </div>
+                        </div>
+                    </div>
+                    <!--<div class="row">-->
+                        <!--<div class="col-sm-6 col-sm-offset-3 social-login">-->
+                        	<!--<h3>...其他身份？</h3>-->
+                        	<!--<div class="social-login-buttons">-->
+	                        	<!--<a class="btn btn-link-2" href="login_user.html">-->
+	                        		<!--&lt;!&ndash; <i class="fa fa-facebook"></i> &ndash;&gt; 人才-->
+	                        	<!--</a>-->
+	                        	<!--<a class="btn btn-link-2" href="login_teacher.html">-->
+	                        		<!--&lt;!&ndash; <i class="fa fa-twitter"></i> &ndash;&gt; 教师-->
+	                        	<!--</a>-->
+	                        	<!--<a class="btn btn-link-2" href="login_company.html">-->
+	                        		<!--&lt;!&ndash; <i class="fa fa-google-plus"></i> &ndash;&gt; 企业-->
+	                        	<!--</a>-->
+                        	<!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                </div>
+            </div>
+            
+        </div>
+
+
+        <script>
+        function login()
+        {
+            var pswd = $("#pswd").val();
+            var userId = $("#userId").val();
+            $.post("/login.action",
+                {
+                    id: userId,
+                    password: pswd
+                },
+                function (result) {
+                    if(result===0)
+                    {
+                        alert("用户名或密码错误，请重试！");
+                    }
+                    else{
+                        window.location.replace("index.html");
+                    }
+
+                });
+        }
+        </script>
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
+
+
+        <!-- Javascript -->
+        <script src="assets/js/jquery-1.11.1.min.js"></script>
+        <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+        <script src="assets/js/jquery.backstretch.min.js"></script>
+        <script src="assets/js/scripts.js"></script>
+        
+        <!--[if lt IE 10]>
+            <script src="assets/js/placeholder.js"></script>
+        <![endif]-->
+
+    </body>
+
+</html>

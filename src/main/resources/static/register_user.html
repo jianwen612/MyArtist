@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+
+
+<!-- Mirrored from www.zi-han.net/theme/hplus/register.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:19:52 GMT -->
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>MyArtist用户注册</title>
+    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
+    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+
+    <link rel="shortcut icon" href="img/favicon2.ico">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/font-awesome.min93e3.css" rel="stylesheet">
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="css/animate.min.css" rel="stylesheet">
+    <link href="css/style.min862f.css?v=4.1.0" rel="stylesheet">
+
+    <link rel="stylesheet" href="./css/bootstrapValidator.css"/>
+
+    <script src="js/jquery-1.11.1.min.js"></script>
+
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins/iCheck/icheck.min.js"></script>
+    <script src="js/plugins/validate/jquery.validate.min.js"></script>
+    <script src="js/plugins/validate/messages_zh.min.js"></script>
+    <script src="js/demo/form-validate-demo.min.js"></script>
+
+    <script src="assets/js/jquery.backstretch.min.js"></script>
+    <script src="assets/js/scripts.js"></script>
+    <script type="text/javascript" src="./js/bootstrapValidator.js"></script>
+
+    <script>if (window.top !== window.self) {
+        window.top.location = window.location;
+    }</script>
+
+</head>
+
+<body class="gray-bg">
+<a class="navbar-brand" href="#"><img src="assets/img/logo2.png" alt=""></a>
+<h1 style="color: white;font-size: 60px;margin-left: 875px;margin-top: 50px" >MyArtist</h1>
+<div class="middle-box text-center loginscreen   animated fadeInDown" align="center">
+    <div align="center">
+        <div align="center">
+
+
+
+        </div>
+        <h3 style="color: white">欢迎注册 MyArtist</h3>
+        <p style="color: white">创建一个MyArtist新账户</p>
+
+
+        <form class="form-horizontal m-t" id="signupForm" data-toggle="validator" role="form">
+            <div class="form-group">
+                <label class="col-sm-3 control-label" style="color: white;font-size: 15px">姓名：</label>
+                <div class="col-sm-8">
+                    <input id="userName" name="firstname" class="form-control" type="text">
+                    <span class="help-block m-b-none" style="color: #1ab394"><i class="fa fa-info-circle"></i>请输入您的名字</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label" style="color: white;font-size: 15px;">ID：</label>
+                <div class="col-sm-8">
+                    <input id="userId" name="username" class="form-control" aria-required="true" aria-invalid="true"
+                           type="text" >
+                </div>
+            </div>
+            <div class="form-group">
+
+                <label class="col-sm-3 control-label" style="color: white;font-size: 15px">性别：
+                </label>
+                <div class="radio i-checks">
+                    <label class=""style="color: white;font-size: 15px" >
+                        <div class="iradio_square-green " style="position: relative;"><input  value="1"
+                                                                                              name="a"
+                                                                                              style="position: absolute; opacity: 0;"
+                                                                                              type="radio">
+                        </div>男
+                    </label>
+
+                    <label style="color: white;font-size: 15px">
+                        <div class="iradio_square-green" style="position: relative;"><input checked="" value="0"
+                                                                                            name="a"
+                                                                                            style="position: absolute; opacity: 0;"
+                                                                                            type="radio">
+                        </div>女
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label" style="color: white;font-size: 15px">密码：</label>
+                <div class="col-sm-8">
+                    <input id="password" name="password" class="form-control" type="password">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label" style="color: white;font-size: 15px">确认：</label>
+                <div class="col-sm-8">
+                    <input id="confirm_password" name="confirm_password" class="form-control" type="password">
+                    <span class="help-block m-b-none" style="color: #1ab394"><i class="fa fa-info-circle"></i> 请再次输入您的密码</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label" style="color: white;font-size: 15px">Email：</label>
+                <div class="col-sm-8">
+                    <input id="email" name="email" class="form-control" type="email">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-8 col-sm-offset-3">
+                    <div class="checkbox">
+                        <label style="color: white;font-size: 15px">
+                            <input class="checkbox" id="agree" name="agree" type="checkbox" > 我同意《MyArtist使用协议》
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-8 col-sm-offset-3">
+                    <a id="registerButton" onclick="register()" class="btn btn-primary block full-width m-b" >注册</a>
+                    <p class="text-muted text-center" style="color: white;font-size: 15px">已有MyArtist账户？<a href="./login_user.html" style="color: #1ab394;font-size: 15px">点此登录</a>
+                </div>
+            </div>
+
+
+
+        </form>
+        <!--<div class="col-sm-8 col-sm-offset-3 social-login">-->
+            <!--<h3 style="color: white;font-size: 15px">...其他身份？</h3>-->
+            <!--<div class="social-login-buttons">-->
+                <!--<a class="btn btn-primary" href="register_user.html">-->
+                    <!--&lt;!&ndash; <i class="fa fa-facebook"></i> &ndash;&gt; 人才-->
+                <!--</a>-->
+                <!--<a class="btn btn-primary" href="register_teacher.html">-->
+                    <!--&lt;!&ndash; <i class="fa fa-twitter"></i> &ndash;&gt; 教师-->
+                <!--</a>-->
+                <!--<a class="btn btn-primary" href="register_company.html">-->
+                    <!--&lt;!&ndash; <i class="fa fa-google-plus"></i> &ndash;&gt; 企业-->
+                <!--</a>-->
+            <!--</div>-->
+        <!--</div>-->
+
+
+
+    </div>
+</div>
+<script>
+
+
+    function register() {
+        var pswd = $("#password").val();
+        var pswd2 = $("#confirm_password").val();
+        var userName = $("#userName").val();
+        var userId = $("#userId").val();
+        var email = $("#email").val();
+        var sex = $('input[name=a]:checked').val();
+        var check=$("#agree").is(":checked");
+        if(!check){
+            alert("请同意协议后再点击注册！");
+            return;
+        }
+        if(userName.length<2){
+            alert("姓名长度太短!");
+            return;
+        }
+        if(pswd!=pswd2){
+            alert("两次密码不一致!");
+            return;
+        }
+        if(email.length<5){
+            alert("请输入正确的邮箱！");
+            return;
+        }
+        if(userId.length<2){
+            alert("请按要求输入ID！");
+            return;
+        }
+        $.post("/register.action",
+            {
+                id: userId,
+                username:userName,
+                password: pswd,
+                email:email,
+                sex:sex
+            },
+            function (status) {
+                if (status === 0) {
+                    alert("ID已被注册，请重新输入!");
+                }
+                else {
+//                    alert(status)
+                    alert("注册成功!请登录!");
+                    window.location.replace("login.html");
+                }
+
+            });
+
+
+
+    }
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        $(".i-checks").iCheck({checkboxClass: "icheckbox_square-green", radioClass: "iradio_square-green",})
+    });
+</script>
+</body>
+
+
+<!-- Mirrored from www.zi-han.net/theme/hplus/register.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:19:52 GMT -->
+</html>

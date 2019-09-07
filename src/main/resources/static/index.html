@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+
+
+<head>
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+    <title>MyArtist图片风格迁移</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="./effectcss/app.b540c43b9662048927e6ffe1de67321b.css">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+          integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <script src="./effectjs/jquery.js"></script>
+    <script src="dist/bundle.js"></script>
+    <link rel="stylesheet" type="text/css" href="./effectcss/default.css"/>
+    <link rel="stylesheet" type="text/css" href="./effectcss/component.css"/>
+    <link rel="stylesheet" href="cssbutton/style.css">
+    <script src="./effectjs/modernizr.custom.js"></script>
+    <script>
+        function uploadimage() {
+            var canvas = document.getElementById("stylized");
+            var data = canvas.toDataURL("image/png", 1);
+            if (data.length === 1594) {
+                alert("请先迁移风格");
+                return 0;
+            }
+
+
+            data = data.split(',')[1];
+            data = window.atob(data);
+            var ia = new Uint8Array(data.length);
+            for (var i = 0; i < data.length; i++) {
+                ia[i] = data.charCodeAt(i);
+            }
+            var blob = new Blob([ia], {type: "image/png"});
+
+            var fd = new FormData();
+            fd.append("uploadimage", blob);
+            $.ajax({
+                url: "/uploadimage.action",
+                type: 'post',
+                processData: false,
+                contentType: false,
+                data: fd,
+                dataType: 'json',
+                success: function (data) {
+
+                    if (data === 0) {
+                        alert("server error!");
+
+                    } else {
+                        alert("上传成功！");
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert(textStatus + "---" + errorThrown);
+                }
+            });
+
+        }
+
+
+        function logout() {
+            $.post("/logout.action",
+                {},
+                function (result) {
+                    if (result === 0) {
+                        alert("退出过程出现错误");
+                    }
+                    else {
+                        alert("退出成功");
+                        window.location.replace("/login_user.html");
+                    }
+
+                });
+        }
+        function setContent(picName) {
+            var contentSelect = document.getElementById('content-select');
+            contentSelect.value = picName;
+            var contentImg = document.getElementById('content-img');
+            contentImg.src = 'images/' + picName + '.jpg';
+            document.getElementById('wait_pic').click();
+        }
+        function setStyle(picName) {
+            var styleSelect = document.getElementById('style-select');
+            styleSelect.value = picName;
+            var styleImg = document.getElementById('style-img');
+            styleImg.src = 'images/' + picName + '.jpg';
+            document.getElementById('style_pic').click();
+        }
+
+    </script>
+</head>
+
+<style>
+    .centered {
+        margin: auto;
+        display: block;
+    }
+</style>
+
+<body style="background-attachment:fixed" background="./images/leaves.png">
+<a href="https://github.com/hwdjw" class="github-corner" aria-label="View source on Github">
+    <svg width="80" height="80" viewBox="0 0 250 250"
+         style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+<style>.github-corner:hover .octo-arm {
+    animation: octocat-wave 560ms ease-in-out
+}
+
+@keyframes octocat-wave {
+    0%, 100% {
+        transform: rotate(0)
+    }
+    20%, 60% {
+        transform: rotate(-25deg)
+    }
+    40%, 80% {
+        transform: rotate(10deg)
+    }
+}
+
+@media (max-width: 500px) {
+    .github-corner:hover .octo-arm {
+        animation: none
+    }
+
+    .github-corner .octo-arm {
+        animation: octocat-wave 560ms ease-in-out
+    }
+}</style>
+<input type="file" id="file-select" style="display: none" accept="image/x-png,image/gif,image/jpeg"/>
+<!-- As a heading -->
+<div id="app">
+    <div data-v-12b44752="" class="banner"><p data-v-12b44752="" class="leading">Style Transfer</p>
+        <p data-v-12b44752="" class="leading-2">MyArtist风格迁移</p>
+        <p data-v-12b44752="">您好，董建文</p>
+        <p onclick="logout()" data-v-12b44752="">退出登录</p>
+    </div>
+
+</div>
+
+
+<div class="">
+    <div id="mobile-warning" hidden class="alert alert-warning" role="alert">
+        移动端访问时可能会出现问题
+    </div>
+    <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="stylize-tab" data-toggle="tab" href="#stylize" role="tab"
+               aria-controls="stylize" aria-selected="true" hidden>Stylize an image</a>
+        </li>
+        <li class="nav-item">
+            <a hidden class="nav-link" id="combine-tab" data-toggle="tab" href="#combine" role="tab"
+               aria-controls="combine" aria-selected="false">Combine two styles</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="stylize" role="tabpanel" aria-labelledby="stylize-tab">
+            <div class="container">
+
+                <div class="row my-4">
+                    <div class="col mx-5 my-4">
+                        <img id="content-img" class="centered" src="images/scu.jpg" height=256></img>
+                        <br>
+
+                        <!--
+                        <label for="content-img-size" backgroud="#FFFFFF">待迁移图片</label>
+                        -->
+                        <span style="background:white">待迁移图片</span>
+
+
+                        <i class="far fa-question-circle" data-toggle="tooltip" data-placement="top"
+                           title="图片分辨率越高，效果越好，但速度越慢。"></i>
+                        <input type="range" min="256" max="400" value="256" class="custom-range centered"
+                               id="content-img-size" hidden>
+                        <br>
+                        <select id="content-select" class="centered custom-select">
+                            <option value="" disabled>选择内容图片</option>
+
+                            <option value="file">选择本机文件</option>
+                            <option value="huaxi">huaxi</option>
+                            <option value="plant">plant</option>
+                            <option value="great_arch">great_arch</option>
+                            <option value="stata">stata</option>
+                            <option value="diana">diana</option>
+                            <option value="golden_gate">golden_gate</option>
+                            <option value="beach">beach</option>
+                            <option value="scu" selected="selected">scu</option>
+                            <option value="chicago">chicago</option>
+                            <option value="statue_of_liberty">statue_of_liberty</option>
+                        </select>
+                    </div>
+
+                    <div class="col mx-5 my-4">
+                        <img id="style-img" class="centered" crossorigin="anonymous" src="images/ink_painting.jpg"
+                             height=256>
+
+                        </img>
+                        <br>
+                        <!--
+                     <label for="style-img-size">风格图片</label>
+                     -->
+                        <span style="background:white">风格图片</span>
+                        <i class="far fa-question-circle" data-toggle="tooltip" data-placement="top"
+                           title='图片分辨率越高，效果越好，但速度越慢。'></i>
+                        <input id="style-img-square" type="checkbox" style="vertical-align: middle; float: right;"
+                               data-toggle="tooltip" data-placement="top"
+                               title="Force image to square" hidden>
+                        <input hidden type="range" min="100" max="400" value="256" class="custom-range centered"
+                               id="style-img-size">
+                        <br>
+                        <select id="style-select" class="centered custom-select">
+                            <option value="" disabled>选择一个风格</option>
+                            <option value="file">选择本机文件</option>
+                            <option hidden value="random">随机图片(wikiart.org)</option>
+                            <option value="udnie">udnie</option>
+                            <option value="ink_painting" selected="selected">ink_painting</option>
+                            <option value="butterfly">butterfly</option>
+                            <option value="wreck">wreck</option>
+                            <option value="wave">wave</option>
+                            <option value="rain_princess">rain_princess</option>
+                            <option value="la_muse">la_muse</option>
+                            <option value="scream">scream</option>
+                            <option value="stripes">stripes</option>
+                            <option value="bricks">bricks</option>
+                            <option value="clouds">clouds</option>
+                            <option value="towers">towers</option>
+                            <option value="sketch">sketch</option>
+                            <option value="seaport">seaport</option>
+                            <option value="red_circles">red_circles</option>
+                            <option value="zigzag">zigzag</option>
+                        </select>
+                    </div>
+
+
+                </div>
+                <div align="center">
+                    <a href="./viewImage.html" class="btn right">
+                        <span class="left title">我的图册</span>
+                        <span class="right icon icon-heart"><span class="arrow-right"></span></span>
+                    </a>
+                </div>
+                <br/>
+                <br/>
+
+
+                <!-- below is choose-->
+                <nav class="cbp-hsmenu-wrapper" id="cbp-hsmenu-wrapper">
+                    <div class="cbp-hsinner">
+                        <ul class="cbp-hsmenu">
+                            <li style="visibility:hidden;"><a href="#">Our mm</a></li>
+                            <li>
+                                <a id="wait_pic" href="#">待迁移图片预览</a>
+                                <ul class="cbp-hssubmenu cbp-hssub-rows">
+                                    <!--<option value="file">选择本机文件</option>-->
+                                    <!--<option value="huaxi">huaxi</option>-->
+                                    <!--<option value="plant">plant</option>-->
+                                    <!--<option value="great_arch">great_arch</option>-->
+                                    <!--<option value="stata">stata</option>-->
+                                    <!--<option value="diana">diana</option>-->
+                                    <!--<option value="golden_gate">golden_gate</option>-->
+                                    <!--<option value="beach">beach</option>-->
+                                    <!--<option value="scu" selected="selected">scu</option>-->
+                                    <!--<option value="chicago">chicago</option>-->
+                                    <!--<option value="statue_of_liberty">statue_of_liberty</option>-->
+
+                                    <li><a onclick="setContent('huaxi')"><img src="images/reshape_huaxi.jpg"
+                                                                              alt="img01"/><span>华西钟楼</span></a></li>
+                                    <li><a onclick="setContent('plant')"><img src="images/reshape_plant.jpg"
+                                                                              alt="img02"/><span>植物</span></a></li>
+                                    <li><a onclick="setContent('great_arch')"><img src="images/reshape_great_arch.jpg"
+                                                                                   alt="img03"/><span>圣路易斯大拱门</span></a>
+                                    </li>
+                                    <li><a onclick="setContent('stata')"><img src="images/reshape_stata.jpg"
+                                                                              alt="img04"/><span>斯塔拉中心</span></a></li>
+                                    <li><a onclick="setContent('diana')"><img src="images/reshape_diana.jpg"
+                                                                              alt="img05"/><span>戴安娜</span></a></li>
+                                    <li><a onclick="setContent('golden_gate')"><img src="images/reshape_golden_gate.jpg"
+                                                                                    alt="img06"/><span>金门大桥</span></a>
+                                    </li>
+                                    <li><a onclick="setContent('beach')"><img src="images/reshape_beach.jpg"
+                                                                              alt="img07"/><span>海滩</span></a></li>
+                                    <li><a onclick="setContent('scu')"><img src="images/reshape_scu.jpg"
+                                                                            alt="img08"/><span>川大</span></a></li>
+                                    <li><a onclick="setContent('chicago')"><img src="images/reshape_chicago.jpg"
+                                                                                alt="img09"/><span>芝加哥</span></a></li>
+                                    <li><a onclick="setContent('statue_of_liberty')"><img
+                                            src="images/reshape_statue_of_liberty.jpg"
+                                            alt="img10"/><span>自由雕像</span></a></li>
+                                </ul>
+                            </li>
+                            <li style="visibility:hidden;"><a href="#">Our Mission</a></li>
+                            <li style="visibility:hidden;"><a href="#">Our Missionmm</a></li>
+
+                            <li>
+                                <a id="style_pic" href="#">风格图片预览</a>
+                                <ul class="cbp-hssubmenu cbp-hssub-rows">
+                                    <!--<option value="udnie" >udnie</option>-->
+                                    <!--<option value="ink_painting" selected="selected">ink_painting</option>-->
+                                    <!--<option value="butterfly">butterfly</option>-->
+                                    <!--<option value="wreck">wreck</option>-->
+                                    <!--<option value="wave">wave</option>-->
+                                    <!--<option value="rain_princess">rain_princess</option>-->
+                                    <!--<option value="la_muse">la_muse</option>-->
+                                    <!--<option value="scream">scream</option>-->
+                                    <!--<option value="stripes">stripes</option>-->
+                                    <!--<option value="bricks">bricks</option>-->
+                                    <!--<option value="clouds">clouds</option>-->
+                                    <!--<option value="towers">towers</option>-->
+                                    <!--<option value="sketch">sketch</option>-->
+                                    <!--<option value="seaport">seaport</option>-->
+                                    <!--<option value="red_circles">red_circles</option>-->
+                                    <!--<option value="zigzag">zigzag</option>-->
+                                    <li><a onclick="setStyle('udnie')"><img src="images/reshape_udnie.jpg" alt="img01"/><span>udnie-弗朗西斯</span></a>
+                                    </li>
+                                    <li><a onclick="setStyle('ink_painting')"><img src="images/reshape_ink_painting.jpg"
+                                                                                   alt="img02"/><span>水墨画</span></a>
+                                    </li>
+                                    <li><a onclick="setStyle('butterfly')"><img src="images/reshape_butterfly.jpg"
+                                                                                alt="img03"/><span>蝴蝶</span></a></li>
+                                    <li><a onclick="setStyle('wreck')"><img src="images/reshape_wreck.jpg" alt="img04"/><span>破坏</span></a>
+                                    </li>
+                                    <li><a onclick="setStyle('wave')"><img src="images/reshape_wave.jpg"
+                                                                           alt="img05"/><span>波浪</span></a></li>
+                                    <li><a onclick="setStyle('rain_princess')"><img
+                                            src="images/reshape_rain_princess.jpg" alt="img06"/><span>雨中公主</span></a>
+                                    </li>
+                                    <li><a onclick="setStyle('la_muse')"><img src="images/reshape_la_muse.jpg"
+                                                                              alt="img07"/><span>拉姆斯</span></a></li>
+                                    <li><a onclick="setStyle('scream')"><img src="images/reshape_scream.jpg"
+                                                                             alt="img08"/><span>尖叫</span></a></li>
+                                    <li><a onclick="setStyle('clouds')"><img src="images/reshape_clouds.jpg"
+                                                                             alt="img09"/><span>云</span></a></li>
+                                    <li><a onclick="setStyle('towers')"><img src="images/reshape_towers.jpg"
+                                                                             alt="img10"/><span>塔</span></a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+                <div>
+                    <div class="row my-4"></div>
+                    <div class="row my-4"></div>
+                    <div class="row my-4"></div>
+                    <div class="row my-4"></div>
+                </div>
+                >
+                <div class="row my-4">
+                    <div class="col-md-6 offset-md-3">
+                        <canvas id="stylized" class="centered"></canvas>
+                        <br>
+                        <!--
+                      <label  for="stylized-img-ratio">请先选择模型</label>
+                      -->
+                        <span style="visibility:hidden; background:dodgerblue"><font
+                                color="white">请先选择分类及迁移模型</font></span>
+                        <i style="visibility:hidden;" class="far fa-question-circle" data-toggle="tooltip"
+                           data-placement="top"
+                           title="不同大小的模型渲染速度不同，效果也有所不同"></i>
+                        <input hidden type="range" min="0" max="100" value="100" class="custom-range centered"
+                               id="stylized-img-ratio">
+                    </div>
+                </div>
+                <div class="row my-4">
+                    <div class="col-md-4 offset-md-4">
+                        <button style="background-color: #47a3da" disabled id="style-button" type="button"
+                                class="btn btn-primary btn-block">
+                            正在加载风格模型，请稍候
+                        </button>
+                        <!--<button data-v-8c2077ac="" id="style-button"-->
+                        <!--class="mu-raised-button mu-raised-button-primary mu-raised-button-inverse" type="button"-->
+                        <!--style="outline: none; -webkit-appearance: none; user-select: none; cursor: pointer;"-->
+                        <!--tabindex="0">-->
+                        <!--<div class="mu-raised-button-wrapper">-->
+                        <!--<div class="mu-ripple-wrapper"></div> &lt;!&ndash;&ndash;&gt; &lt;!&ndash;&ndash;&gt; <span-->
+                        <!--class="mu-raised-button-label">正在加载风格模型，请稍候</span></div>-->
+                        <!--</button>-->
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" onclick="uploadimage()" id="upload" class="btn btn-light btn-block">
+                            <i class="fas fa-random" data-toggle="tooltip" data-placement="top"
+                               title="上传图片到我的图册"></i>
+                        </button>
+
+                        <button hidden type="button" id="randomize" class="btn btn-light btn-block">
+                            <i class="fas fa-random" data-toggle="tooltip" data-placement="top"
+                               title="upload image"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- below useless -->
+        <div class="tab-pane fade" id="combine" role="tabpanel" aria-labelledby="combine-tab">
+            <div class="container">
+                <div class="row my-4">
+                    <div class="col mx-5 my-4">
+                        <img hidden id="c-style-img-1" class="centered" crossorigin="anonymous" src="images/stripes.jpg"
+                             height=256></img>
+                        <br>
+                        <label hidden for="c-style-img-1-size">Style A Size</label>
+                        <i class="far fa-question-circle" data-toggle="tooltip" data-placement="top"
+                           title='Changing the size of a style image usually affects the texture "seen" by the network.'></i>
+                        <input hidden id="c-style-1-square" type="checkbox"
+                               style="vertical-align: middle; float: right;"
+                               data-toggle="tooltip" data-placement="top"
+                               title="Force image to square">
+                        <input hidden type="range" min="100" max="400" value="256" class="custom-range centered"
+                               id="c-style-img-1-size">
+                        <br>
+                        <select id="c-style-1-select" class="centered custom-select">
+                            <option value="" disabled>Select a style</option>
+                            <option value="file">Select from file</option>
+                            <option value="random">Random image from wikiart.org</option>
+                            <option value="udnie">udnie</option>
+                            <option value="stripes" selected="selected">stripes</option>
+                            <option value="bricks">bricks</option>
+                            <option value="clouds">clouds</option>
+                            <option value="towers">towers</option>
+                            <option value="sketch">sketch</option>
+                            <option value="seaport">seaport</option>
+                            <option value="red_circles">red_circles</option>
+                            <option value="zigzag">zigzag</option>
+                        </select>
+                    </div>
+                    <div class="col mx-5 my-4">
+                        <img id="c-style-img-2" class="centered" crossorigin="anonymous" src="images/bricks.jpg"
+                             height=256></img>
+                        <br>
+                        <label hidden for="c-style-img-2-size">Style B Size</label>
+                        <i hidden class="far fa-question-circle" data-toggle="tooltip" data-placement="top"
+                           title='Changing the size of a style image usually affects the texture "seen" by the network.'></i>
+                        <input hidden id="c-style-2-square" type="checkbox"
+                               style="vertical-align: middle; float: right;"
+                               data-toggle="tooltip" data-placement="top"
+                               title="Force image to square">
+                        <input hidden type="range" min="100" max="400" value="256" class="custom-range centered"
+                               id="c-style-img-2-size">
+                        <br>
+                        <select id="c-style-2-select" class="centered custom-select">
+                            <option value="" disabled>Select a style</option>
+                            <option value="file">Select from file</option>
+                            <option value="random">Random image from wikiart.org</option>
+                            <option value="udnie">udnie</option>
+                            <option value="stripes">stripes</option>
+                            <option value="bricks" selected="selected">bricks</option>
+                            <option value="clouds">clouds</option>
+                            <option value="towers">towers</option>
+                            <option value="sketch">sketch</option>
+                            <option value="seaport">seaport</option>
+                            <option value="red_circles">red_circles</option>
+                            <option value="zigzag">zigzag</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row my-4">
+                    <div class="col-md-6 offset-md-3">
+                        <img id="c-content-img" class="centered" src="images/statue_of_liberty.jpg" height=256></img>
+                        <br>
+                        <label for="c-content-img-size">Content image size</label>
+                        <i class="far fa-question-circle" data-toggle="tooltip" data-placement="top"
+                           title="A bigger content image results in a more detailed output, but increases the processing time significantly."></i>
+                        <input type="range" min="256" max="400" value="256" class="custom-range centered"
+                               id="c-content-img-size">
+                        <br>
+                        <select id="c-content-select" class="centered custom-select">
+                            <option value="" disabled>选择内容图片</option>
+
+                            <option value="file">选择本机文件</option>
+                            <option value="stata">stata</option>
+                            <option value="diana">diana</option>
+                            <option value="golden_gate">golden_gate</option>
+                            <option value="beach">beach</option>
+                            <option value="chicago">chicago</option>
+                            <option value="statue_of_liberty" selected="selected">statue_of_liberty</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row my-4">
+                    <div class="col-md-6 offset-md-3">
+                        <canvas id="c-stylized" class="centered"></canvas>
+                        <br>
+                        <label for="c-stylized-img-ratio">Stylization Ratio</label>
+                        <i class="far fa-question-circle" data-toggle="tooltip" data-placement="top"
+                           title="This parameter affects the strength of the two styles relative to each other. This is done via interpolation between the style vectors of the two style images."></i>
+                        <input type="range" min="0" max="100" value="50" class="custom-range centered"
+                               id="c-stylized-img-ratio">
+                    </div>
+                </div>
+                <div class="row my-4">
+                    <div class="col-md-5 offset-md-3">
+                        <button disabled id="combine-button" type="button" class="btn btn-primary btn-block">Loading
+                            stylization model. Please wait..
+                        </button>
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" id="c-randomize" class="btn btn-light btn-block">
+                            <i class="fas fa-random" data-toggle="tooltip" data-placement="top"
+                               title="Randomize parameters"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- above useless -->
+    </div>
+    <!-- below is output picture -->
+    <div class="container">
+        <div class="row my-4">
+            <div class="col-md-3 ">
+                <select disabled id="model-select-style" class="centered custom-select">
+                    <option value="mobilenet" selected="selected">[分类更快] Distilled MobileNet style model (9.6MB)
+                    </option>
+                    <option value="inception">[分类更佳] Original Inceptionv3 style model (36.3MB)</option>
+                </select>
+                <a style="visibility:hidden;">退出登录</a>
+            </div>
+            <div class="col-md-3">
+                <select disabled id="model-select-transformer" class="centered custom-select">
+                    <option value="separable" selected="selected">[迁移更快] Separable_conv2d transformer (2.4MB)</option>
+                    <option value="original">[迁移更佳] Original transformer model (7.9MB)</option>
+                </select>
+
+            </div>
+            <br>
+            <a>上传图片到我的画册</a>
+        </div>
+    </div>
+    <!-- above is output picture -->
+    <!-- below useless -->
+    <canvas id="hidden-canvas" style="display: none"></canvas>
+    <!-- above useless -->
+    <div class="modal fade" id="cam-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Take a snapshot!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <video id="webcam-video" class="centered" width="500" height="375"></video>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="snap-button">Snap!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<!-- JQuery -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
+<script src="./effectjs/cbpHorizontalSlideOutMenu.min.js"></script>
+<script>
+    var menu = new cbpHorizontalSlideOutMenu(document.getElementById('cbp-hsmenu-wrapper'));
+</script>
+
+</body>
+</html>
